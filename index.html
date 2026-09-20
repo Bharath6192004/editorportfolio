@@ -524,20 +524,47 @@ function render(){
     grid.append(b);
   });
   updateEmpty(list.length);
-}
+/* ==========================================================
+   YOUR VIDEOS: paste links between the quotes. That is all.
+   t = title (optional), u = video link.
+   YouTube: youtu.be/... or youtube.com/watch?v=... or /shorts/...
+   Instagram: https://www.instagram.com/reel/XXXXXXXXXXX/  (public account)
+   Google Drive: https://drive.google.com/file/d/XXXXXXXX/view
+   (Drive share setting must be "Anyone with the link")
+   To add more videos, copy one { t: "", u: "" } line and paste it below.
+   ========================================================== */
+const MY_VIDEOS = {
+  yt: [
+    { t: "Algo Trading podcast", u: "https://youtu.be/2mXvd7GU33o?si=tydW0qj8RF1tUVdZ" },
+    { t: "Trading mistake podcast", u: "https://youtu.be/EK_mmGtT7lc?si=q1liJzKC9JnDsjcT" },
+    { t: "US life podcast", u: "https://youtu.be/1m1viAo5GQ4?si=Vtu7L6nmJvFgBqVd" }
+  ],
+  ig: [
+    { t: "Viral reel", u: "https://www.instagram.com/reel/DaiN6i2zx8U/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" },
+    { t: "Shop promotion", u: "https://www.instagram.com/reel/DdG5VvgjA8n/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" },
+    { t: "Academy opening", u: "https://www.instagram.com/reel/DctGp_4geOs/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" }
+  ],
+  dr: [
+    { t: "Lulu AD", u: "https://drive.google.com/file/d/1GnTA6V-FMlSTb7reDWA4qpCUa4GRQM4Y/view?usp=drive_link" },
+    { t: "Event highlights", u: "https://drive.google.com/file/d/197gem8oNU0wxKDYhJOpZsgW3_b1p7Prh/view?usp=drive_link" },
+    { t: "Show reel", u: "https://drive.google.com/file/d/1LdbzSwCSp5v--K6n5Jl8KWMsRSHsWANR/view?usp=drive_link" },
+    { t: "Ai video", u: "https://drive.google.com/file/d/1cC50ZKQEznPHVf97jTU1_9_eJINg2O5y/view?usp=drive_link" }
+  ]
+};
+
+/* loads the links above into the showreel (no limit on how many you add) */
+(function loadMyVideos(){
+  ORDER.forEach(k => { KINDS[k].n = Math.max(KINDS[k].n, (MY_VIDEOS[k] || []).length); });
+  state = norm({ rev: 9999999999999, yt: MY_VIDEOS.yt, ig: MY_VIDEOS.ig, dr: MY_VIDEOS.dr });
+})();
+
 function updateEmpty(n){
   const box = $('#empty');
   box.hidden = n > 0;
   if(n > 0) return;
-  if(isOwner || location.hash === '#edit'){
-    $('#emptyTitle').textContent = 'No videos yet';
-    $('#emptyText').textContent = 'Tap "Add or edit links" and paste your 3 YouTube, 3 Instagram and 4 Google Drive links.';
-    $('#emptyWa').hidden = true;
-  } else {
-    $('#emptyTitle').textContent = 'New videos are being added';
-    $('#emptyText').textContent = 'The showreel is being updated. Message me and I will send samples right away.';
-    $('#emptyWa').hidden = false;
-  }
+  $('#emptyTitle').textContent = 'New videos are being added';
+  $('#emptyText').textContent = 'The showreel is being updated. Message me and I will send samples right away.';
+  $('#emptyWa').hidden = false;
 }
 fBox.addEventListener('click', e => {
   const b = e.target.closest('.chip'); if(!b) return;
